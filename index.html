@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D3.js Bar Chart Example</title>
+    <title>Inscribe Prototype</title>
     <!-- Include D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
@@ -28,6 +28,26 @@
     <div id="mainWeb"></div>
 
     <script>
+        // Create a function to handle keyboard shortcuts
+        // Create a function to handle keyboard shortcuts
+        function handleKeyPress(event) {
+            // Check if the key pressed is 'n' and either Ctrl (for Windows/Linux) or Command (for macOS) is pressed
+            if ((event.key === 'b' || event.key === 'B') && (event.ctrlKey || event.metaKey)) {
+                // Prevent default behavior of the browser (e.g., opening a new tab)
+                event.preventDefault();
+
+                // Create a new draggable group
+                var userInput = prompt("Please enter some text:");
+                if (userInput !== null) {
+                    createDraggableCircle(svg, userInput);
+                } else {
+                    alert("No input provided.");
+                }
+            }
+        }
+
+        // Listen for keydown events on the window
+        window.addEventListener('keydown', handleKeyPress);
         // Data
         const data = [10, 20, 30, 40, 50];
         const width = 800
@@ -120,6 +140,8 @@
             // Apply drag behavior to the circle
             entry.call(dragHandler);
         }
+
+
 
 
     </script>
