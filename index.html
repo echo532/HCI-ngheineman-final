@@ -20,12 +20,58 @@
         #mainWeb svg {
             border: 1px solid black;
         }
+
+        #mainWeb {
+            width: 90%;
+            /* Adjust the width as needed */
+            float: left;
+            /* Float the SVG panel to the left */
+        }
+
+        /* Style the list of words */
+        #wordList {
+            width: 10%;
+            /* Adjust the width as needed */
+            float: left;
+            /* Float the list to the left */
+        }
     </style>
 </head>
 
 <body>
     <h1>Inscribe prototype</h1>
-    <div id="mainWeb"></div>
+    <div id="container">
+        <div id="wordList">
+            <!-- List of words goes here -->
+            <h2>Sample Word List</h2>
+            <ul>
+                <li>Battle School</li>
+                <li>Ender Wiggin</li>
+                <li>Formic</li>
+                <li>Command School</li>
+                <li>Peter Wiggin</li>
+                <li>Mazer Rackham</li>
+                <li>Giant's Drink</li>
+                <li>Third Invasion</li>
+                <li>Dragon Army</li>
+                <li>Valentine Wiggin</li>
+                <li>The Mind Game</li>
+                <li>Buggers</li>
+                <li>The Battle Room</li>
+                <li>Salamander Army</li>
+                <li>Locke and Demosthenes</li>
+                <li>IF (International Fleet)</li>
+                <li>Bugger War</li>
+                <li>Graff and Anderson</li>
+                <li>Null Gravity</li>
+                <li>Ender's Jeesh</li>
+
+                <!-- Add more words as needed -->
+            </ul>
+        </div>
+        <div id="mainWeb"></div>
+    </div>
+
 
     <script>
         // Create a function to handle keyboard shortcuts
@@ -117,7 +163,10 @@
                         newColor = "blue";
                         break;
                     case "blue":
-                        newColor = "black";
+                        newColor = "orange";
+                        break;
+                    case "orange":
+                        newColor = "purple";
                         break;
                     default:
                         newColor = "black"; // Default to black if the current color is not recognized
@@ -131,7 +180,7 @@
 
         colorButtonGroup.append("rect")
             .attr("width", 120)      // width of the rectangle
-            .attr("height", 40)      // height of the rectangle
+            .attr("height", 80)      // height of the rectangle
             .attr("fill", "gray")    // fill color of the rectangle
             .style("cursor", "pointer"); // change cursor to pointer on hover
         // Add click behavior
@@ -144,7 +193,15 @@
             .attr("font-size", "14px")
             .attr("fill", "white")
             .style("cursor", "pointer") // change cursor to pointer on hover
-            .text("Change Entry Color");
+            .text("Change Entry Color\n(5 Possible Colors)");
+
+        colorButtonGroup.append("text")
+            .attr("x", 5) // x-coordinate of the text relative to the group
+            .attr("y", 55) // y-coordinate of the text relative to the group
+            .attr("font-size", "14px")
+            .attr("fill", "white")
+            .style("cursor", "pointer") // change cursor to pointer on hover
+            .text("(5 Possible Colors)");
 
         //array of all created entries
         entryArray = [];
@@ -179,7 +236,7 @@
                 .attr("display", "none")
                 .attr("x", -5) // Adjust x position to create padding
                 .attr("y", -5) // Adjust y position to create padding
-                .attr("width", 110) // Set the width of the outer rectangle
+                .attr("width", 160) // Set the width of the outer rectangle
                 .attr("height", 50) // Set the height of the outer rectangle
                 .attr("fill", "none") // Set the fill color to none
                 .attr("stroke", "blue") // Set the stroke color
@@ -188,7 +245,7 @@
 
             entry.append("rect")
                 .attr("id", "innerBox")
-                .attr("width", 100)      // width of the rectangle
+                .attr("width", 150)      // width of the rectangle
                 .attr("height", 40)      // height of the rectangle
                 .attr("fill", "black")    // fill color of the rectangle
                 .attr("stroke-width", 3)
@@ -208,7 +265,7 @@
 
 
             entry.append("rect")
-                .attr("x", 80) // x-coordinate of the text relative to the group
+                .attr("x", 130) // x-coordinate of the text relative to the group
                 .attr("y", 0) // y-coordinate of the text relative to the group
                 .attr("width", 20)      // width of the rectangle
                 .attr("height", 20)     // height of the rectangle
@@ -223,7 +280,7 @@
 
             // Append text for delete button
             entry.append("text")
-                .attr("x", 85) // x-coordinate of the text relative to the group
+                .attr("x", 135) // x-coordinate of the text relative to the group
                 .attr("y", 15) // y-coordinate of the text relative to the group
                 .attr("font-size", "14px")
                 .attr("fill", "white")
