@@ -29,7 +29,6 @@
 
     <script>
         // Create a function to handle keyboard shortcuts
-        // Create a function to handle keyboard shortcuts
         function handleKeyPress(event) {
             // Check if the key pressed is 'n' and either Ctrl (for Windows/Linux) or Command (for macOS) is pressed
             if ((event.key === 'b' || event.key === 'B') && (event.ctrlKey || event.metaKey)) {
@@ -39,7 +38,7 @@
                 // Create a new draggable group
                 var userInput = prompt("Please enter some text:");
                 if (userInput !== null) {
-                    createDraggableCircle(svg, userInput);
+                    createDraggableEntry(svg, userInput);
                 } else {
                     alert("No input provided.");
                 }
@@ -50,8 +49,8 @@
         window.addEventListener('keydown', handleKeyPress);
         // Data
         const data = [10, 20, 30, 40, 50];
-        const width = 800
-        const height = 400
+        const width = 1400
+        const height = 800
 
         // Create SVG element
         const svg = d3.select("#mainWeb")
@@ -68,7 +67,7 @@
                 // Check if the user entered any text
                 if (userInput !== null) {
                     // Display the user input
-                    createDraggableCircle(svg, userInput);
+                    createDraggableEntry(svg, userInput);
                 } else {
                     // Handle case where user cancels the prompt
                     alert("No input provided.");
@@ -92,18 +91,108 @@
             .style("cursor", "pointer") // change cursor to pointer on hover
             .text("New Entry");
 
+        const colorButtonGroup = svg.append("g")
+            .attr("transform", "translate(10, 60)")
+            .on("click", function () {
+                console.log(selectedEntry);
+                if (selectedEntry === -1) {
+                    return;
+                }
 
-        function createDraggableCircle(svg, inputText) {
+                const rect = d3.select("#" + selectedEntry).select("#innerBox"); // Select the rectangle by ID
+
+                // Get the current stroke color
+                const currentColor = rect.attr("stroke");
+
+                // Determine the new stroke color based on the current color
+                let newColor;
+                switch (currentColor) {
+                    case "black":
+                        newColor = "red";
+                        break;
+                    case "red":
+                        newColor = "green";
+                        break;
+                    case "green":
+                        newColor = "blue";
+                        break;
+                    case "blue":
+                        newColor = "black";
+                        break;
+                    default:
+                        newColor = "black"; // Default to black if the current color is not recognized
+                }
+
+                // Set the new stroke color
+                rect.attr("stroke", newColor);
+            });
+
+
+
+        colorButtonGroup.append("rect")
+            .attr("width", 120)      // width of the rectangle
+            .attr("height", 40)      // height of the rectangle
+            .attr("fill", "gray")    // fill color of the rectangle
+            .style("cursor", "pointer"); // change cursor to pointer on hover
+        // Add click behavior
+
+
+        // Append text to the group
+        colorButtonGroup.append("text")
+            .attr("x", 5) // x-coordinate of the text relative to the group
+            .attr("y", 25) // y-coordinate of the text relative to the group
+            .attr("font-size", "14px")
+            .attr("fill", "white")
+            .style("cursor", "pointer") // change cursor to pointer on hover
+            .text("Change Entry Color");
+
+        //array of all created entries
+        entryArray = [];
+        counterCreated = 0;
+        selectedEntry = -1;
+
+        function selectEntry(entryID) {
+            entryArray.forEach(function (entry) {
+                entry.select("#outerBox").attr("display", "none");
+            });
+
+            selectedEntry = entryID;
+            d3.select("#" + entryID).select("#outerBox").attr("display", "block");
+
+        }
+
+
+        function createDraggableEntry(svg, inputText) {
+
+
+
             // Append a circle to the SVG
-
             const entry = svg.append("g")
                 .attr("transform", "translate(200, 200)")
+                .attr("id", "entry" + counterCreated)
+                .on("click", function () {
+                    selectEntry(d3.select(this).attr("id"));
 
+                });
+            entry.append("rect")
+                .attr("id", "outerBox")
+                .attr("display", "none")
+                .attr("x", -5) // Adjust x position to create padding
+                .attr("y", -5) // Adjust y position to create padding
+                .attr("width", 110) // Set the width of the outer rectangle
+                .attr("height", 50) // Set the height of the outer rectangle
+                .attr("fill", "none") // Set the fill color to none
+                .attr("stroke", "blue") // Set the stroke color
+                .attr("stroke-width", 1) // Set the stroke width
+                .style("pointer-events", "none"); // Make sure the outer rectangle doesn't intercept pointer events
 
             entry.append("rect")
+                .attr("id", "innerBox")
                 .attr("width", 100)      // width of the rectangle
                 .attr("height", 40)      // height of the rectangle
                 .attr("fill", "black")    // fill color of the rectangle
+                .attr("stroke-width", 3)
+                .attr("stroke", "black")
                 .style("cursor", "pointer"); // change cursor to pointer on hover
 
             // Append text to the group
@@ -114,6 +203,37 @@
                 .attr("fill", "white")
                 .style("cursor", "pointer") // change cursor to pointer on hover
                 .text(inputText);
+
+
+
+
+            entry.append("rect")
+                .attr("x", 80) // x-coordinate of the text relative to the group
+                .attr("y", 0) // y-coordinate of the text relative to the group
+                .attr("width", 20)      // width of the rectangle
+                .attr("height", 20)     // height of the rectangle
+                .attr("fill", "gray")    // fill color of the rectangle
+                .style("cursor", "pointer") // change cursor to pointer on hover
+                .on("click", function () {
+
+                    entry.remove();
+                    event.stopPropagation(); //stop click from overriding
+
+                });
+
+            // Append text for delete button
+            entry.append("text")
+                .attr("x", 85) // x-coordinate of the text relative to the group
+                .attr("y", 15) // y-coordinate of the text relative to the group
+                .attr("font-size", "14px")
+                .attr("fill", "white")
+                .style("cursor", "pointer") // change cursor to pointer on hover
+                .text("X") // You can adjust the text as needed
+                .on("click", function () {
+                    entry.remove();
+                    event.stopPropagation(); //stop click from overriding
+
+                });
 
             // Define drag behavior
             const dragHandler = d3.drag()
@@ -139,6 +259,9 @@
 
             // Apply drag behavior to the circle
             entry.call(dragHandler);
+
+            entryArray.push(entry);
+            counterCreated++;
         }
 
 
