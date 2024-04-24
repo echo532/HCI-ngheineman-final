@@ -26,13 +26,7 @@
         <p>This is a brief description of what the website is about.</p>
     </div>
 
-    <!-- Top navigation bar -->
-    <div class="topnav">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#contact">Contact</a>
-    </div>
+
 
     <div id="csv-container">
 
@@ -71,35 +65,10 @@
 
 
     <script>
-        // Create a function to handle keyboard shortcuts
-        function handleKeyPress(event) {
-            // Check if the key pressed is 'n' and either Ctrl (for Windows/Linux) or Command (for macOS) is pressed
-            if ((event.key === 'b' || event.key === 'B') && (event.ctrlKey || event.metaKey)) {
-                // Prevent default behavior of the browser (e.g., opening a new tab)
-                event.preventDefault();
 
-                var width = document.getElementById("main-web").width;
-                var height = document.getElementById("main-web").height;
-                console.log(width);
-                console.log(height);
 
-                // Create a new draggable group
-                var userInput = prompt("Please enter some text:");
-                if (userInput !== null) {
-                    let entry = createDraggableEntry(svg, userInput);
-                    entryArray.push(entry);
-                    counterCreated++;
+        //storing inputted data
 
-                } else {
-                    alert("No input provided.");
-                }
-            }
-        }
-
-        // Listen for keydown events on the window
-        window.addEventListener('keydown', handleKeyPress);
-        // Data
-        const data = [10, 20, 30, 40, 50];
         var width = document.getElementById("main-web").offsetWidth;
         var height = document.getElementById("main-web").offsetHeight;
         console.log(width);
@@ -111,106 +80,49 @@
             .attr("width", width)
             .attr("height", height);
 
+
+        // Create a function to handle keyboard shortcuts
+        function handleKeyPress(event) {
+            // Check if the key pressed is 'n' and either Ctrl (for Windows/Linux) or Command (for macOS) is pressed
+            if ((event.key === 'b' || event.key === 'B') && (event.ctrlKey || event.metaKey)) {
+                // Prevent default behavior of the browser (e.g., opening a new tab)
+                event.preventDefault();
+
+                popupGroup.style("display", "block");
+                popupGroup.raise();
+
+            }
+        }
+        // Listen for keydown events on the window
+        window.addEventListener('keydown', handleKeyPress);
+
+
         const buttonGroup = svg.append("g")
             .attr("transform", "translate(10, 10)")
             .on("click", function () {
-                // Prompt the user for text input
-                var userInput = prompt("Please enter some text:");
+                popupGroup.style("display", "block");
+                popupGroup.raise();
 
-                // Check if the user entered any text
-                if (userInput !== null) {
-                    // Display the user input
-                    let entry = createDraggableEntry(svg, userInput);
-                    entryArray.push(entry);
-                    counterCreated++;
-                } else {
-                    // Handle case where user cancels the prompt
-                    alert("No input provided.");
-                }
             });
 
+
         buttonGroup.append("rect")
+            .attr("class", "button")
             .attr("width", 100)      // width of the rectangle
             .attr("height", 40)      // height of the rectangle
-            .attr("fill", "gray")    // fill color of the rectangle
             .style("cursor", "pointer"); // change cursor to pointer on hover
         // Add click behavior
 
 
         // Append text to the group
         buttonGroup.append("text")
+            .attr("class", "button-text")
             .attr("x", 5) // x-coordinate of the text relative to the group
             .attr("y", 25) // y-coordinate of the text relative to the group
-            .attr("font-size", "14px")
-            .attr("fill", "white")
             .style("cursor", "pointer") // change cursor to pointer on hover
             .text("New Entry");
 
-        const colorButtonGroup = svg.append("g")
-            .attr("transform", "translate(10, 60)")
-            .on("click", function () {
-                console.log(selectedEntry);
-                if (selectedEntry === -1) {
-                    return;
-                }
 
-                const rect = d3.select("#" + selectedEntry).select("#innerBox"); // Select the rectangle by ID
-
-                // Get the current stroke color
-                const currentColor = rect.attr("stroke");
-
-                // Determine the new stroke color based on the current color
-                let newColor;
-                switch (currentColor) {
-                    case "black":
-                        newColor = "red";
-                        break;
-                    case "red":
-                        newColor = "green";
-                        break;
-                    case "green":
-                        newColor = "blue";
-                        break;
-                    case "blue":
-                        newColor = "orange";
-                        break;
-                    case "orange":
-                        newColor = "purple";
-                        break;
-                    default:
-                        newColor = "black"; // Default to black if the current color is not recognized
-                }
-
-                // Set the new stroke color
-                rect.attr("stroke", newColor);
-            });
-
-
-
-        colorButtonGroup.append("rect")
-            .attr("width", 120)      // width of the rectangle
-            .attr("height", 80)      // height of the rectangle
-            .attr("fill", "gray")    // fill color of the rectangle
-            .style("cursor", "pointer"); // change cursor to pointer on hover
-        // Add click behavior
-
-
-        // Append text to the group
-        colorButtonGroup.append("text")
-            .attr("x", 5) // x-coordinate of the text relative to the group
-            .attr("y", 25) // y-coordinate of the text relative to the group
-            .attr("font-size", "14px")
-            .attr("fill", "white")
-            .style("cursor", "pointer") // change cursor to pointer on hover
-            .text("Change Entry Color\n(5 Possible Colors)");
-
-        colorButtonGroup.append("text")
-            .attr("x", 5) // x-coordinate of the text relative to the group
-            .attr("y", 55) // y-coordinate of the text relative to the group
-            .attr("font-size", "14px")
-            .attr("fill", "white")
-            .style("cursor", "pointer") // change cursor to pointer on hover
-            .text("(5 Possible Colors)");
 
         //array of all created entries
         entryArray = [];
@@ -226,6 +138,98 @@
             d3.select("#" + entryID).select("#outerBox").attr("display", "block");
 
         }
+
+
+
+
+        // Create popup container as a group element within the SVG
+        const popupGroup = svg.append('g')
+            .attr("transform", "translate(400, 100)")
+            .attr('class', 'popup-group');
+
+        // Create popup background rectangle
+        popupGroup.append('rect')
+            .attr('class', 'popup-background')
+            .attr('x', 100)
+            .attr('y', 0)
+            .attr('width', 300)
+            .attr('height', 400);
+
+        // Text input with character limit
+        popupGroup.append('foreignObject')
+            .attr('x', 150)
+            .attr('y', 100)
+            .attr('width', 200)
+            .attr('height', 30)
+            .html('<input type="text" maxlength="20" placeholder="Enter text (max 20 characters)" class="input-field">');
+
+        // Larger text input without character limit
+        popupGroup.append('foreignObject')
+            .attr('x', 150)
+            .attr('y', 150)
+            .attr('width', 200)
+            .attr('height', 200)
+            .html('<textarea placeholder="Enter text" class="textarea-field"></textarea>');
+
+        // Submit button
+        const submitButton = popupGroup.append('g')
+            .attr('class', 'popup-submit-button')
+            .attr('transform', 'translate(150, 360)')
+            .style('cursor', 'pointer')
+            .on('click', function () {
+                const textInput1Value = d3.select('input').property('value');
+                const textInput2Value = d3.select('textarea').property('value');
+
+                if (textInput1Value.trim() === '') {
+                    alert('Please enter text in the top field.');
+                    return;
+                }
+
+
+
+                createDraggableEntry(svg, textInput1Value);
+                popupGroup.style('display', 'none');
+            });
+
+
+        createDraggableEntry(svg, "teeest");
+
+        submitButton.append('rect')
+            .attr('width', 80)
+            .attr('height', 30);
+
+        submitButton.append('text')
+            .attr('x', 40)
+            .attr('y', 20)
+            .text('Submit');
+
+        // Cancel button
+        const cancelButton = popupGroup.append('g')
+            .attr('class', 'popup-cancel-button')
+            .attr('transform', 'translate(270, 360)')
+            .style('cursor', 'pointer')
+            .on('click', function () {
+                popupGroup.style('display', 'none');
+            });
+
+        cancelButton.append('rect')
+            .attr('width', 80)
+            .attr('height', 30);
+
+        cancelButton.append('text')
+            .attr('x', 40)
+            .attr('y', 20)
+            .text('Cancel');
+
+        // Function to show the popup
+        function showPopup() {
+            popupGroup.style('display', 'block');
+        }
+
+        // Add click event listener to the open button
+        d3.select('#openButton').on('click', showPopup);
+
+
 
     </script>
 </body>

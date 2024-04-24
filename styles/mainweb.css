@@ -10,7 +10,7 @@
 
 }
 
-/*CSV */
+/*SVG */
 #main-web {
     width: 80%;
     height: 500px;
@@ -36,33 +36,139 @@
 
 /* Internal CSV */
 
+.button {
+    fill: #007bff;
+    /* Button background color */
+    stroke: none;
+    /* Remove stroke */
+    cursor: pointer;
+    /* Show pointer cursor on hover */
+    transition: fill 0.3s ease;
+    /* Smooth color transition on hover */
+}
+
+/* Text styling */
+.button-text {
+    fill: white;
+    /* Text color */
+    font-family: Arial, sans-serif;
+    /* Font family */
+    font-size: 16px;
+    /* Font size */
+    pointer-events: none;
+    /* Prevent text from receiving pointer events */
+}
+
+/* Hover effect */
+.button:hover {
+    fill: #0056b3;
+    /* Darker color on hover */
+}
+
 #main-web svg {
     border: 1px solid black;
 }
 
 /* styles.css */
-#outerBox {
-    display: none;
-    fill: none;
+.entry {
+    cursor: pointer;
+}
+
+.entry .highlight {
+    cursor: pointer;
     stroke: blue;
-    stroke-width: 1;
+    stroke-width: 2;
+    fill: white;
+    display: none;
+}
+
+.entry .mainBox {
+    fill: lightgray;
+    /* white fill */
+    stroke: black;
+    /* light gray stroke */
+    stroke-width: 2;
+    border-radius: 10px;
+    rx: 10;
+    ry: 10;
+}
+
+.entry .tab {
+    fill: #ffffff;
+    /* white fill */
+    stroke: black;
+    /* default tab color */
+    stroke-width: 2;
+    cursor: pointer;
+}
+
+.entry .tab.selected {
+    fill: #007bff;
+    /* selected tab color */
+}
+
+
+
+.popup-button-group rect {
+    fill: #007bff;
+    stroke: none;
+    cursor: pointer;
+    rx: 5;
+}
+
+.popup-button-group text {
+    fill: white;
+    font-family: Arial;
+    font-size: 16px;
+    text-anchor: middle;
     pointer-events: none;
 }
 
-#innerBox {
-    fill: black;
-    stroke: black;
-    stroke-width: 3;
+.popup-submit-button rect {
+    fill: #007bff;
+    stroke: none;
     cursor: pointer;
+    rx: 5;
 }
 
-.deleteButton {
+.popup-cancel-button rect {
     fill: gray;
+    stroke: none;
     cursor: pointer;
+    rx: 5;
 }
 
-.entryText {
-    font-size: 14px;
+.popup-submit-button text,
+.popup-cancel-button text {
     fill: white;
-    cursor: pointer;
+    font-family: Arial;
+    font-size: 16px;
+    text-anchor: middle;
+}
+
+.cancel-button rect {
+    fill: #ff0000;
+}
+
+.popup-group {
+    display: none;
+}
+
+.popup-background {
+    fill: white;
+    stroke: #007bff;
+    stroke-width: 2;
+    rx: 5;
+}
+
+.input-field {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.textarea-field {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
 }
