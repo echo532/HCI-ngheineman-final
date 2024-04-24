@@ -1,0 +1,68 @@
+/* External non-CSV */
+
+
+/* overarching container */
+#csv-container {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+}
+
+/*CSV */
+#main-web {
+    width: 80%;
+    height: 500px;
+    /* change later */
+    margin: 20px;
+    padding: 20px;
+    float: left;
+    /* Float the SVG panel to the left */
+}
+
+/* Style the list of words */
+#word-list {
+    margin: 20px;
+    /* Add margin between items */
+    padding: 20px;
+    /* Add padding */
+    width: 10%;
+    /* Adjust the width as needed */
+
+    float: left;
+    /* Float the list to the left */
+}
+
+/* Internal CSV */
+
+#main-web svg {
+    border: 1px solid black;
+}
+
+/* styles.css */
+#outerBox {
+    display: none;
+    fill: none;
+    stroke: blue;
+    stroke-width: 1;
+    pointer-events: none;
+}
+
+#innerBox {
+    fill: black;
+    stroke: black;
+    stroke-width: 3;
+    cursor: pointer;
+}
+
+.deleteButton {
+    fill: gray;
+    cursor: pointer;
+}
+
+.entryText {
+    font-size: 14px;
+    fill: white;
+    cursor: pointer;
+}

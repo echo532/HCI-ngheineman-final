@@ -7,41 +7,39 @@
     <title>Inscribe Prototype</title>
     <!-- Include D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <style>
-        /* CSS styles for the chart */
-        .bar {
-            fill: steelblue;
-        }
 
-        .bar:hover {
-            fill: orange;
-        }
+    <!-- StyleSheets-->
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/topbar.css">
+    <link rel="stylesheet" href="styles/mainweb.css">
 
-        #mainWeb svg {
-            border: 1px solid black;
-        }
+    <!-- Scripts-->
 
-        #mainWeb {
-            width: 90%;
-            /* Adjust the width as needed */
-            float: left;
-            /* Float the SVG panel to the left */
-        }
-
-        /* Style the list of words */
-        #wordList {
-            width: 10%;
-            /* Adjust the width as needed */
-            float: left;
-            /* Float the list to the left */
-        }
-    </style>
+    <script src="javascript/entryCreation.js"></script>
 </head>
 
 <body>
-    <h1>Inscribe prototype</h1>
-    <div id="container">
-        <div id="wordList">
+
+    <!-- Large title screen -->
+    <div class="title-screen">
+        <h1>Welcome to My Website</h1>
+        <p>This is a brief description of what the website is about.</p>
+    </div>
+
+    <!-- Top navigation bar -->
+    <div class="topnav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <div id="csv-container">
+
+
+        <div id="main-web"></div>
+
+        <div id="word-list">
             <!-- List of words goes here -->
             <h2>Sample Word List</h2>
             <ul>
@@ -69,7 +67,6 @@
                 <!-- Add more words as needed -->
             </ul>
         </div>
-        <div id="mainWeb"></div>
     </div>
 
 
@@ -81,10 +78,18 @@
                 // Prevent default behavior of the browser (e.g., opening a new tab)
                 event.preventDefault();
 
+                var width = document.getElementById("main-web").width;
+                var height = document.getElementById("main-web").height;
+                console.log(width);
+                console.log(height);
+
                 // Create a new draggable group
                 var userInput = prompt("Please enter some text:");
                 if (userInput !== null) {
-                    createDraggableEntry(svg, userInput);
+                    let entry = createDraggableEntry(svg, userInput);
+                    entryArray.push(entry);
+                    counterCreated++;
+
                 } else {
                     alert("No input provided.");
                 }
@@ -95,11 +100,13 @@
         window.addEventListener('keydown', handleKeyPress);
         // Data
         const data = [10, 20, 30, 40, 50];
-        const width = 1400
-        const height = 800
+        var width = document.getElementById("main-web").offsetWidth;
+        var height = document.getElementById("main-web").offsetHeight;
+        console.log(width);
+        console.log(height);
 
         // Create SVG element
-        const svg = d3.select("#mainWeb")
+        const svg = d3.select("#main-web")
             .append("svg")
             .attr("width", width)
             .attr("height", height);
@@ -113,7 +120,9 @@
                 // Check if the user entered any text
                 if (userInput !== null) {
                     // Display the user input
-                    createDraggableEntry(svg, userInput);
+                    let entry = createDraggableEntry(svg, userInput);
+                    entryArray.push(entry);
+                    counterCreated++;
                 } else {
                     // Handle case where user cancels the prompt
                     alert("No input provided.");
@@ -217,112 +226,6 @@
             d3.select("#" + entryID).select("#outerBox").attr("display", "block");
 
         }
-
-
-        function createDraggableEntry(svg, inputText) {
-
-
-
-            // Append a circle to the SVG
-            const entry = svg.append("g")
-                .attr("transform", "translate(200, 200)")
-                .attr("id", "entry" + counterCreated)
-                .on("click", function () {
-                    selectEntry(d3.select(this).attr("id"));
-
-                });
-            entry.append("rect")
-                .attr("id", "outerBox")
-                .attr("display", "none")
-                .attr("x", -5) // Adjust x position to create padding
-                .attr("y", -5) // Adjust y position to create padding
-                .attr("width", 160) // Set the width of the outer rectangle
-                .attr("height", 50) // Set the height of the outer rectangle
-                .attr("fill", "none") // Set the fill color to none
-                .attr("stroke", "blue") // Set the stroke color
-                .attr("stroke-width", 1) // Set the stroke width
-                .style("pointer-events", "none"); // Make sure the outer rectangle doesn't intercept pointer events
-
-            entry.append("rect")
-                .attr("id", "innerBox")
-                .attr("width", 150)      // width of the rectangle
-                .attr("height", 40)      // height of the rectangle
-                .attr("fill", "black")    // fill color of the rectangle
-                .attr("stroke-width", 3)
-                .attr("stroke", "black")
-                .style("cursor", "pointer"); // change cursor to pointer on hover
-
-            // Append text to the group
-            entry.append("text")
-                .attr("x", 5) // x-coordinate of the text relative to the group
-                .attr("y", 25) // y-coordinate of the text relative to the group
-                .attr("font-size", "14px")
-                .attr("fill", "white")
-                .style("cursor", "pointer") // change cursor to pointer on hover
-                .text(inputText);
-
-
-
-
-            entry.append("rect")
-                .attr("x", 130) // x-coordinate of the text relative to the group
-                .attr("y", 0) // y-coordinate of the text relative to the group
-                .attr("width", 20)      // width of the rectangle
-                .attr("height", 20)     // height of the rectangle
-                .attr("fill", "gray")    // fill color of the rectangle
-                .style("cursor", "pointer") // change cursor to pointer on hover
-                .on("click", function () {
-
-                    entry.remove();
-                    event.stopPropagation(); //stop click from overriding
-
-                });
-
-            // Append text for delete button
-            entry.append("text")
-                .attr("x", 135) // x-coordinate of the text relative to the group
-                .attr("y", 15) // y-coordinate of the text relative to the group
-                .attr("font-size", "14px")
-                .attr("fill", "white")
-                .style("cursor", "pointer") // change cursor to pointer on hover
-                .text("X") // You can adjust the text as needed
-                .on("click", function () {
-                    entry.remove();
-                    event.stopPropagation(); //stop click from overriding
-
-                });
-
-            // Define drag behavior
-            const dragHandler = d3.drag()
-                .on("start", function (event) {
-                    // Record the starting position of the group
-                    d3.select(this).attr("initialX", event.x);
-                    d3.select(this).attr("initialY", event.y);
-                })
-                .on("drag", function (event) {
-                    // Calculate the new position of the group based on the drag movement
-                    const dx = event.x - parseFloat(d3.select(this).attr("initialX"));
-                    const dy = event.y - parseFloat(d3.select(this).attr("initialY"));
-                    const newX = parseFloat(d3.select(this).attr("transform").split(",")[0].split("(")[1]) + dx;
-                    const newY = parseFloat(d3.select(this).attr("transform").split(",")[1].split(")")[0]) + dy;
-
-                    // Update the position of the group
-                    d3.select(this).attr("transform", "translate(" + newX + "," + newY + ")");
-
-                    // Update the initial position for the next drag event
-                    d3.select(this).attr("initialX", event.x);
-                    d3.select(this).attr("initialY", event.y);
-                });
-
-            // Apply drag behavior to the circle
-            entry.call(dragHandler);
-
-            entryArray.push(entry);
-            counterCreated++;
-        }
-
-
-
 
     </script>
 </body>

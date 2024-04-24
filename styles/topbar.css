@@ -1,0 +1,57 @@
+/* Style for the large title screen */
+.title-screen {
+    background-color: #ffffff;
+    /* White background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow */
+    padding: 5px;
+    /* Add padding for better spacing */
+    text-align: center;
+    /* Center align content */
+}
+
+.title-screen h1 {
+    font-size: 36px;
+    /* Large font size for the title */
+    margin-bottom: 10px;
+    /* Add spacing between title and description */
+}
+
+.title-screen p {
+    font-size: 18px;
+    /* Font size for the description */
+    color: #666666;
+    /* Gray text color */
+}
+
+/* Style for the top navigation bar */
+.topnav {
+    background-color: #ffffff;
+    /* White background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow */
+    padding: 10px;
+    /* Add padding for better spacing */
+    display: flex;
+    justify-content: space-between;
+    /* Distribute items evenly */
+}
+
+/* Style for the buttons */
+.topnav a {
+    color: #333333;
+    /* Dark text color */
+    text-decoration: none;
+    font-size: 16px;
+    /* Reduce font size slightly */
+    padding: 10px 20px;
+    /* Padding for the buttons */
+    transition: background-color 0.3s;
+    /* Smooth transition */
+}
+
+/* Change the color of the buttons on hover */
+.topnav a:hover {
+    background-color: #f2f2f2;
+    /* Light gray background on hover */
+}
