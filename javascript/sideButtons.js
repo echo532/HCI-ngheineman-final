@@ -1,6 +1,6 @@
 
 
-function createNewButton(newButtonGroup, popupGroup) {
+function createNewButton(svg, newButtonGroup, popupGroup) {
 
     //creating new functionality
     newButtonGroup.attr("transform", "translate(10, 10)")
@@ -29,16 +29,18 @@ function createNewButton(newButtonGroup, popupGroup) {
         .style("cursor", "pointer") // change cursor to pointer on hover
         .text("New");
 }
-
 function createEditButton(editButtonGroup, popupGroup) {
 
     //create edit functionality
     editButtonGroup.attr("transform", "translate(10, 80)")
         .on("click", function () {
-            if (selectedEntry !== -1) {
+
+            entry = d3.select("#" + svg.attr("selectedEntry")).text();
+            console.log(entry);
+            if (entry !== null) {
                 newOrEditing = "editing";
                 editButtonGroup.select("#edit-button-error").style("display", "none");
-                const entry = d3.select("#" + selectedEntry);
+                const entry = d3.select("#" + svg.attr("selectedEntry"));
                 let title = entry.select("#entryTitle").text();
                 let content = entry.select("#extra-information").text();
 

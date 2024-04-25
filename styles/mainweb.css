@@ -2,7 +2,7 @@
 
 
 /* overarching container */
-#csv-container {
+#svg-container {
     width: 90%;
     display: flex;
     justify-content: center;
@@ -10,15 +10,20 @@
 
 }
 
+
 /*SVG */
 #main-web {
     width: 80%;
-    height: 500px;
+    height: 700px;
     /* change later */
     margin: 20px;
     padding: 20px;
     float: left;
     /* Float the SVG panel to the left */
+}
+
+#main-web svg {
+    border: 1px solid black;
 }
 
 /* Style the list of words */
@@ -65,9 +70,7 @@
     /* Darker color on hover */
 }
 
-#main-web svg {
-    border: 1px solid black;
-}
+
 
 /* styles.css */
 .entry {
@@ -94,7 +97,6 @@
 }
 
 .entry .tab {
-    fill: #ffffff;
     /* white fill */
     stroke: black;
     /* default tab color */

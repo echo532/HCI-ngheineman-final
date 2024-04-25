@@ -1,4 +1,4 @@
-function popupHelper(popupGroup) {
+function popupHelper(svg, popupGroup) {
 
     popupGroup
         .attr("transform", "translate(400, 100)")
@@ -51,11 +51,11 @@ function popupHelper(popupGroup) {
             }
 
             if (newOrEditing === "editing") {
-                const entry = d3.select("#" + selectedEntry);
+                const entry = d3.select("#" + svg.attr("selectedEntry"));
                 entry.select("#entryTitle").text(textInput1Value);
                 entry.select("#extra-information").select("#extra-information-text").html(textInput2Value);
             } else if (newOrEditing === "new") {
-                addEntry(textInput1Value, textInput2Value);
+                addEntry(300, 400, textInput1Value, textInput2Value, "white");
             }
 
             popupGroup.style('display', 'none');

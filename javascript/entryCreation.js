@@ -1,5 +1,5 @@
 
-function entryHelper(entry, input1, input2) {
+function entryHelper(entry, input1, input2, tabColor) {
 
 
     //highlight box
@@ -23,6 +23,7 @@ function entryHelper(entry, input1, input2) {
         .attr("height", 65) // Set the height of the tab
         .attr("rx", 10) // Set horizontal radius
         .attr("ry", 10) // Set vertical radius
+        .attr("fill", tabColor)
         .on("click", function () {
 
             if (colorPopupOpen) {
@@ -99,7 +100,7 @@ function entryHelper(entry, input1, input2) {
     // Append text to the group
     entry.append("text")
         .attr("id", "entryTitle")
-        .attr("x", 15)
+        .attr("x", 5)
         .attr("y", 25)
         .attr("font-size", "14px")
         .text(input1);
@@ -112,7 +113,11 @@ function entryHelper(entry, input1, input2) {
         .attr("y", 15) // y-coordinate of the text relative to the group
         .text("X")
         .on("click", function () {
-
+            // console.log(entry.attr("id"));
+            // if (entry.attr("id") === svg.attr("selectedEntry")) {
+            //     console.log("This should have worked...");
+            //     svg.attr("selectedEntry", "-1");
+            // }
             entry.remove();
             //event.stopPropagation(); //stop click from overriding
 

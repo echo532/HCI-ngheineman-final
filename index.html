@@ -17,21 +17,17 @@
 
 <body>
     <!-- Scripts-->
-    <script src="javascript/entryCreation.js"></script>
-    <script src="javascript/popupMenu.js"></script>
-    <script src="javascript/sideButtons.js"></script>
+
+
 
     <!-- Large title screen -->
     <div class="title-screen">
-        <h1>Welcome to My Website</h1>
-        <p>This is a brief description of what the website is about.</p>
+        <img src="content/inscribeLogo.png" width="500" height="auto">
     </div>
 
 
 
-    <div id="csv-container">
-
-        <div id="file-list"></div>
+    <div id="svg-container">
 
         <div id="main-web"></div>
 
@@ -65,113 +61,14 @@
         </div>
     </div>
 
-
-    <script>
-
-
-
-
-        //storing inputted data
-
-        let newOrEditing = "";
-
-        var width = document.getElementById("main-web").offsetWidth;
-        var height = document.getElementById("main-web").offsetHeight;
-        console.log(width);
-        console.log(height);
-
-        const fileSvg = d3.select("#file-list")
-            .append("svg")
-            .attr("width", 100)
-            .attr("height", height)
-
-        // Create SVG element
-        const svg = d3.select("#main-web")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height);
+    <script src="javascript/entryCreation.js"></script>
+    <script src="javascript/popupMenu.js"></script>
+    <script src="javascript/sideButtons.js"></script>
+    <script src="javascript/entryCreation.js"></script>
 
 
+    <script src="mainScript.js"></script>
 
-        // Create a function to handle keyboard shortcuts
-        function handleKeyPress(event) {
-            // Check if the key pressed is 'n' and either Ctrl (for Windows/Linux) or Command (for macOS) is pressed
-            if ((event.key === 'b' || event.key === 'B') && (event.ctrlKey || event.metaKey)) {
-                // Prevent default behavior of the browser (e.g., opening a new tab)
-                event.preventDefault();
-
-                newOrEditing = "new";
-
-                popupGroup.select("#entryTitle").html('<input type="text" maxlength="20" class="input - field">');
-                popupGroup.select("#entryContent").html('<textarea class="textarea-field"></textarea>');
-
-                popupGroup.style('display', 'block');
-
-            }
-        }
-        // Listen for keydown events on the window
-        window.addEventListener('keydown', handleKeyPress);
-
-
-        //popup group init
-        const popupGroup = svg.append('g');
-        popupHelper(popupGroup);
-
-        //new button init
-        const newButtonGroup = svg.append("g");
-        createNewButton(newButtonGroup, popupGroup);
-
-        //edit button init
-        const editButtonGroup = svg.append("g");
-        createEditButton(editButtonGroup, popupGroup);
-
-
-
-
-
-        //array of all created entries
-        entryArray = [];
-        counterCreated = 0;
-        selectedEntry = -1;
-
-        function selectEntry(entryID) {
-            if (popupGroup.style('display') === 'none') {
-                entryArray.forEach(function (entry) {
-                    entry.select("#highlight").style("display", "none");
-                    entry.select("#extra-information").style("display", "none");
-                });
-
-                selectedEntry = entryID;
-                const entry = d3.select("#" + entryID).raise();
-                entry.select("#highlight").style("display", "block");
-                entry.select("#extra-information").style("display", "block");
-            }
-
-
-        }
-
-        addEntry("teeeest", "SECRET TUNNELLLL")
-
-
-        function addEntry(text1, text2) {
-            const entry = svg.append("g")
-                .attr("transform", "translate(600, 200)")
-                .attr("id", "entry" + counterCreated)
-                .classed("entry", true)
-                .on("click", function () {
-                    console.log(d3.select(this).attr("id"))
-                    selectEntry(d3.select(this).attr("id"))
-                });
-
-            entryArray.push(entry);
-
-            console.log(d3.select(this))
-            entryHelper(entry, text1, text2);
-            counterCreated++;
-
-        }
-
-    </script>
 </body>
 
 </html>
