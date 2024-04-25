@@ -1,21 +1,10 @@
 
-
-
-function createDraggableEntry(svg, inputText) {
-
-    // entry element
-    const entry = svg.append("g")
-        .attr("transform", "translate(600, 200)")
-        .attr("id", "entry" + counterCreated)
-        .classed("entry", true)
-        .on("click", function () {
-            selectEntry(d3.select(this).attr("id"))
-        });
+function entryHelper(entry, input1, input2) {
 
 
     //highlight box
     entry.append("rect")
-        .attr("id", "mainBox")
+        .attr("id", "highlight")
         .attr("x", -10) // Adjust x position to create padding
         .attr("y", -10) // Adjust y position to create padding
         .attr("width", 175) // Set the width of the outer rectangle
@@ -109,10 +98,11 @@ function createDraggableEntry(svg, inputText) {
 
     // Append text to the group
     entry.append("text")
+        .attr("id", "entryTitle")
         .attr("x", 15)
         .attr("y", 25)
         .attr("font-size", "14px")
-        .text(inputText);
+        .text(input1);
 
 
 
@@ -127,6 +117,32 @@ function createDraggableEntry(svg, inputText) {
             //event.stopPropagation(); //stop click from overriding
 
         });
+
+    //extra information box
+    const extraInfo = entry.append("g")
+        .attr("id", "extra-information")
+        .attr("transform", "translate( -50, 60)")
+        .style("display", "none")
+
+    extraInfo.append("rect")
+        .attr("width", 250)
+        .attr("height", 200)
+        .attr("fill", "lightgray");
+
+    const foreignObject = extraInfo.append('foreignObject')
+        .attr('x', 10)
+        .attr('y', 10)
+        .attr('width', 230) // Set the width of the foreignObject
+        .attr('height', 180); // Set the height of the foreignObject
+
+    // Append HTML content to foreignObject
+    foreignObject.append('xhtml:div')
+        .attr("id", "extra-information-text")
+        .style('width', '100%') // Set the width of the HTML content
+        .style('max-height', '1px') // Set the height of the HTML content
+        .style('overflow-wrap', 'break-word') // Enable text wrapping
+        .style('font-size', '12px')
+        .html('' + input2);
 
     // Define drag behavior
     const dragHandler = d3.drag()

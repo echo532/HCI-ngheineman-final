@@ -13,12 +13,13 @@
     <link rel="stylesheet" href="styles/topbar.css">
     <link rel="stylesheet" href="styles/mainweb.css">
 
-    <!-- Scripts-->
-
-    <script src="javascript/entryCreation.js"></script>
 </head>
 
 <body>
+    <!-- Scripts-->
+    <script src="javascript/entryCreation.js"></script>
+    <script src="javascript/popupMenu.js"></script>
+    <script src="javascript/sideButtons.js"></script>
 
     <!-- Large title screen -->
     <div class="title-screen">
@@ -30,6 +31,7 @@
 
     <div id="csv-container">
 
+        <div id="file-list"></div>
 
         <div id="main-web"></div>
 
@@ -67,18 +69,28 @@
     <script>
 
 
+
+
         //storing inputted data
+
+        let newOrEditing = "";
 
         var width = document.getElementById("main-web").offsetWidth;
         var height = document.getElementById("main-web").offsetHeight;
         console.log(width);
         console.log(height);
 
+        const fileSvg = d3.select("#file-list")
+            .append("svg")
+            .attr("width", 100)
+            .attr("height", height)
+
         // Create SVG element
         const svg = d3.select("#main-web")
             .append("svg")
             .attr("width", width)
             .attr("height", height);
+
 
 
         // Create a function to handle keyboard shortcuts
@@ -88,8 +100,12 @@
                 // Prevent default behavior of the browser (e.g., opening a new tab)
                 event.preventDefault();
 
-                popupGroup.style("display", "block");
-                popupGroup.raise();
+                newOrEditing = "new";
+
+                popupGroup.select("#entryTitle").html('<input type="text" maxlength="20" class="input - field">');
+                popupGroup.select("#entryContent").html('<textarea class="textarea-field"></textarea>');
+
+                popupGroup.style('display', 'block');
 
             }
         }
@@ -97,30 +113,19 @@
         window.addEventListener('keydown', handleKeyPress);
 
 
-        const buttonGroup = svg.append("g")
-            .attr("transform", "translate(10, 10)")
-            .on("click", function () {
-                popupGroup.style("display", "block");
-                popupGroup.raise();
+        //popup group init
+        const popupGroup = svg.append('g');
+        popupHelper(popupGroup);
 
-            });
+        //new button init
+        const newButtonGroup = svg.append("g");
+        createNewButton(newButtonGroup, popupGroup);
 
-
-        buttonGroup.append("rect")
-            .attr("class", "button")
-            .attr("width", 100)      // width of the rectangle
-            .attr("height", 40)      // height of the rectangle
-            .style("cursor", "pointer"); // change cursor to pointer on hover
-        // Add click behavior
+        //edit button init
+        const editButtonGroup = svg.append("g");
+        createEditButton(editButtonGroup, popupGroup);
 
 
-        // Append text to the group
-        buttonGroup.append("text")
-            .attr("class", "button-text")
-            .attr("x", 5) // x-coordinate of the text relative to the group
-            .attr("y", 25) // y-coordinate of the text relative to the group
-            .style("cursor", "pointer") // change cursor to pointer on hover
-            .text("New Entry");
 
 
 
@@ -130,106 +135,41 @@
         selectedEntry = -1;
 
         function selectEntry(entryID) {
-            entryArray.forEach(function (entry) {
-                entry.select("#outerBox").attr("display", "none");
-            });
+            if (popupGroup.style('display') === 'none') {
+                entryArray.forEach(function (entry) {
+                    entry.select("#highlight").style("display", "none");
+                    entry.select("#extra-information").style("display", "none");
+                });
 
-            selectedEntry = entryID;
-            d3.select("#" + entryID).select("#outerBox").attr("display", "block");
+                selectedEntry = entryID;
+                const entry = d3.select("#" + entryID).raise();
+                entry.select("#highlight").style("display", "block");
+                entry.select("#extra-information").style("display", "block");
+            }
+
 
         }
 
+        addEntry("teeeest", "SECRET TUNNELLLL")
 
 
+        function addEntry(text1, text2) {
+            const entry = svg.append("g")
+                .attr("transform", "translate(600, 200)")
+                .attr("id", "entry" + counterCreated)
+                .classed("entry", true)
+                .on("click", function () {
+                    console.log(d3.select(this).attr("id"))
+                    selectEntry(d3.select(this).attr("id"))
+                });
 
-        // Create popup container as a group element within the SVG
-        const popupGroup = svg.append('g')
-            .attr("transform", "translate(400, 100)")
-            .attr('class', 'popup-group');
+            entryArray.push(entry);
 
-        // Create popup background rectangle
-        popupGroup.append('rect')
-            .attr('class', 'popup-background')
-            .attr('x', 100)
-            .attr('y', 0)
-            .attr('width', 300)
-            .attr('height', 400);
+            console.log(d3.select(this))
+            entryHelper(entry, text1, text2);
+            counterCreated++;
 
-        // Text input with character limit
-        popupGroup.append('foreignObject')
-            .attr('x', 150)
-            .attr('y', 100)
-            .attr('width', 200)
-            .attr('height', 30)
-            .html('<input type="text" maxlength="20" placeholder="Enter text (max 20 characters)" class="input-field">');
-
-        // Larger text input without character limit
-        popupGroup.append('foreignObject')
-            .attr('x', 150)
-            .attr('y', 150)
-            .attr('width', 200)
-            .attr('height', 200)
-            .html('<textarea placeholder="Enter text" class="textarea-field"></textarea>');
-
-        // Submit button
-        const submitButton = popupGroup.append('g')
-            .attr('class', 'popup-submit-button')
-            .attr('transform', 'translate(150, 360)')
-            .style('cursor', 'pointer')
-            .on('click', function () {
-                const textInput1Value = d3.select('input').property('value');
-                const textInput2Value = d3.select('textarea').property('value');
-
-                if (textInput1Value.trim() === '') {
-                    alert('Please enter text in the top field.');
-                    return;
-                }
-
-
-
-                createDraggableEntry(svg, textInput1Value);
-                popupGroup.style('display', 'none');
-            });
-
-
-        createDraggableEntry(svg, "teeest");
-
-        submitButton.append('rect')
-            .attr('width', 80)
-            .attr('height', 30);
-
-        submitButton.append('text')
-            .attr('x', 40)
-            .attr('y', 20)
-            .text('Submit');
-
-        // Cancel button
-        const cancelButton = popupGroup.append('g')
-            .attr('class', 'popup-cancel-button')
-            .attr('transform', 'translate(270, 360)')
-            .style('cursor', 'pointer')
-            .on('click', function () {
-                popupGroup.style('display', 'none');
-            });
-
-        cancelButton.append('rect')
-            .attr('width', 80)
-            .attr('height', 30);
-
-        cancelButton.append('text')
-            .attr('x', 40)
-            .attr('y', 20)
-            .text('Cancel');
-
-        // Function to show the popup
-        function showPopup() {
-            popupGroup.style('display', 'block');
         }
-
-        // Add click event listener to the open button
-        d3.select('#openButton').on('click', showPopup);
-
-
 
     </script>
 </body>
