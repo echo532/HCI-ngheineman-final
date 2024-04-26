@@ -54,9 +54,10 @@ function createEditButton() {
                 const entry = d3.select("#" + selectedEntry);
                 let title = entry.select("#entryTitle").text();
                 let content = entry.select("#extra-information").text();
+                console.log(title)
 
                 popupGroup = d3.select("#popup-group");
-                popupGroup.select("#entryTitle").html('<input type="text" maxlength="20" value=' + title + ' class="input - field">');
+                popupGroup.select("#entryTitle").html('<input type="text" maxlength="20" value="' + title + '" class="input - field">');
                 popupGroup.select("#entryContent").html('<textarea class="textarea-field">' + content + '</textarea>');
                 popupGroup.select("#popup-group-header").text("Edit Entry");
                 popupGroup.style("display", "block");
