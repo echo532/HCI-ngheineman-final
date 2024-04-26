@@ -17,6 +17,7 @@ function createNewButton() {
             popupGroup = d3.select("#popup-group");
             popupGroup.select("#entryTitle").html('<input type="text" maxlength="20" class="input - field">');
             popupGroup.select("#entryContent").html('<textarea class="textarea-field"> </textarea>');
+            popupGroup.select("#popup-group-header").text("New Entry");
             popupGroup.style("display", "block");
             popupGroup.raise();
 
