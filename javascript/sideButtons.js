@@ -1,11 +1,20 @@
 
 
-function createNewButton(svg, newButtonGroup, popupGroup) {
+function createNewButton() {
 
-    //creating new functionality
-    newButtonGroup.attr("transform", "translate(10, 10)")
+    //console.log(svg.attr("newOrEditing"));
+
+
+
+
+    buttonTest = d3.select("#web-svg").append("g")
+        .attr("id", "new-button")
+        .attr("transform", "translate(10, 10)")
         .on("click", function () {
-            newOrEditing = "new";
+            d3.select("#web-svg").attr("newOrEditing", "new");
+
+
+            popupGroup = d3.select("#popup-group");
             popupGroup.select("#entryTitle").html('<input type="text" maxlength="20" class="input - field">');
             popupGroup.select("#entryContent").html('<textarea class="textarea-field"> </textarea>');
             popupGroup.style("display", "block");
@@ -14,7 +23,7 @@ function createNewButton(svg, newButtonGroup, popupGroup) {
         });
 
     //new button
-    newButtonGroup.append("rect")
+    buttonTest.append("rect")
         .attr("class", "button")
         .attr("width", 100)      // width of the rectangle
         .attr("height", 40)      // height of the rectangle
@@ -22,31 +31,33 @@ function createNewButton(svg, newButtonGroup, popupGroup) {
 
 
     // Append text to the group
-    newButtonGroup.append("text")
+    buttonTest.append("text")
         .attr("class", "button-text")
         .attr("x", 5) // x-coordinate of the text relative to the group
         .attr("y", 25) // y-coordinate of the text relative to the group
         .style("cursor", "pointer") // change cursor to pointer on hover
         .text("New");
 }
-function createEditButton(editButtonGroup, popupGroup) {
+function createEditButton() {
 
     //create edit functionality
-    editButtonGroup.attr("transform", "translate(10, 80)")
+    editButtonGroup = d3.select("#web-svg").append("g")
+        .attr("id", "edit-button")
+        .attr("transform", "translate(10, 80)")
         .on("click", function () {
+            let selectedEntry = d3.select("#web-svg").attr("selectedEntry");
 
-            entry = d3.select("#" + svg.attr("selectedEntry")).text();
-            console.log(entry);
-            if (entry !== null) {
-                newOrEditing = "editing";
+            if (selectedEntry !== "-1") {
+                d3.select("#web-svg").attr("newOrEditing", "editing");
                 editButtonGroup.select("#edit-button-error").style("display", "none");
-                const entry = d3.select("#" + svg.attr("selectedEntry"));
+                const entry = d3.select("#" + selectedEntry);
                 let title = entry.select("#entryTitle").text();
                 let content = entry.select("#extra-information").text();
 
+                popupGroup = d3.select("#popup-group");
                 popupGroup.select("#entryTitle").html('<input type="text" maxlength="20" value=' + title + ' class="input - field">');
                 popupGroup.select("#entryContent").html('<textarea class="textarea-field">' + content + '</textarea>');
-
+                popupGroup.select("#popup-group-header").text("Edit Entry");
                 popupGroup.style("display", "block");
                 popupGroup.raise();
 

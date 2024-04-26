@@ -1,6 +1,11 @@
-function popupHelper(svg, popupGroup) {
+function popupHelper() {
+
+
+    popupGroup = d3.select("#web-svg").append('g');
+
 
     popupGroup
+        .attr("id", "popup-group")
         .attr("transform", "translate(400, 100)")
         .attr('class', 'popup-group');
     // Create popup background rectangle
@@ -13,6 +18,7 @@ function popupHelper(svg, popupGroup) {
 
     //popup title
     popupGroup.append('text')
+        .attr("id", "popup-group-header")
         .attr('x', 150)
         .attr('y', 60)
         .attr('font-size', '40px')
@@ -49,7 +55,7 @@ function popupHelper(svg, popupGroup) {
                 alert('Please enter text in the top field.');
                 return;
             }
-
+            let newOrEditing = d3.select("#web-svg").attr("newOrEditing");
             if (newOrEditing === "editing") {
                 const entry = d3.select("#" + svg.attr("selectedEntry"));
                 entry.select("#entryTitle").text(textInput1Value);

@@ -74,7 +74,6 @@ function entryHelper(entry, input1, input2, tabColor) {
         .attr("fill", function (d) { return d; })
         .on("click", function (event, d) {
             // Change the fill color of the tab
-            console.log(d);
             tab.style("fill", d)
 
             // Hide the color popup
